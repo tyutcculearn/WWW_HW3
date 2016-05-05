@@ -135,7 +135,7 @@
 						echo "<div class=\"row\">
 								<div class=\"col-md-12\"><p>".$row['content']."</p></div>
 							  </div>";
-						$query = "select respond.*,user.Name from respond left join user on respond.user_id = user.id where article_id = '".$_GET['article_id']."'";
+						$query = "select respond.*,user.Name from respond left join user on respond.user_id = user.id where article_id = '".$_GET['article_id']."' order by respond.timestamp desc";
 						$database = mysql_connect("localhost","root","123456");
 						mysql_select_db("hw3",$database);
 						$result = mysql_query($query);

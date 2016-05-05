@@ -24,11 +24,14 @@
 				$error = "密码错误！";
 				mysql_close($database);
 			}
-			mysql_close($database);
-			$_SESSION['id'] = $row['id'];
-			$_SESSION['Name'] = $row['Name'];
-			$_SESSION['Email'] = $row['Email'];
-			echo "<script>location.href=\"./index.php\"</script>";
+			else
+			{
+				mysql_close($database);
+				$_SESSION['id'] = $row['id'];
+				$_SESSION['Name'] = $row['Name'];
+				$_SESSION['Email'] = $row['Email'];
+				echo "<script>location.href=\"./index.php\"</script>";
+			}
 		}	
 	}
 	else
