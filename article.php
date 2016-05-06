@@ -3,24 +3,17 @@
 	if(!isset($_SESSION['id']))
 		echo "<script>location.href=\"./login.php\"</script>";
 	if(isset($_GET['article_id']))
-	{
-		if((int)$_GET['article_id'] >= 0)
+	{   
+		$_GET['article_id'] = (int)$_GET['article_id'];
+		if($_GET['article_id'] >= 0)
 		{
 			$query = "select * from article where id='".$_GET['article_id']."'";
-			$database = mysql_connect("localhost","root","123456");
-			mysql_select_db("hw3",$database);
+			$database = mysql_connect("localhost:3306","s404410904","s404410904");
+			mysql_select_db("s404410904",$database);
 			$result = mysql_query($query);
 			$row = mysql_fetch_array($result);
-			if(!get_magic_quotes_gpc())
-			{
-				$title = stripslashes($row['title']);
-			    $content = stripslashes($row['content']);
-			}
-			else
-			{
-				$title = $row['title'];
-			    $content = $row['content'];
-			}
+			$title = $row['title'];
+		    $content = $row['content'];
 			mysql_close($database);
 		}
 	}
@@ -40,9 +33,9 @@
 		$date = date("Y-m-d H:i:s",time());
 		if($_POST['article_id'] != "")
 		{
-			$update = "update article set title='".$_POST['title']."', content='".$_POST['content']."',last_update='".$date."' where id='".$_POST['article_id']."'";
-			$database = mysql_connect("localhost","root","123456");
-			mysql_select_db("hw3",$database);
+			$update = "update article set title='".$title."', content='".$content."',last_update='".$date."' where id='".$_POST['article_id']."'";
+			$database = mysql_connect("localhost:3306","s404410904","s404410904");
+			mysql_select_db("s404410904",$database);
 			mysql_query($update);
 			mysql_close($database);
 			echo "<script>alert('修改成功');window.location.href=\"./article.php?article_id=".$_POST['article_id']."\";</script>";
@@ -50,8 +43,8 @@
 		else
 		{
 			$insert = "insert into article (author_id,title,content,created_time,last_update) values('".$_SESSION['id']."','".$title."','".$content."','".$date."','".$date."')";
-			$database = mysql_connect("localhost","root","123456");
-			mysql_select_db("hw3",$database);
+			$database = mysql_connect("localhost:3306","s404410904","s404410904");
+			mysql_select_db("s404410904",$database);
 			mysql_query($insert);
 			$query = "select LAST_INSERT_ID()";
 			$result = mysql_query($query);

@@ -3,9 +3,15 @@
 	extract($_POST);
 	if(isset($Name) && $Name && isset($Email) && $Email && isset($Password) && $Password && isset($Cpassword) && $Cpassword)
 	{
+		if(!get_magic_quotes_gpc())
+		{
+			$Name = addslashes($Name);
+		    $Email = addslashes($Email);
+		    $Password = addslashes($Password);
+		}
 		$query = "select * from user where Email='".$Email."'";
-		$database = mysql_connect("localhost","root","123456");
-		mysql_select_db("hw3",$database);
+		$database = mysql_connect("localhost:3306","s404410904","s404410904");
+		mysql_select_db("s404410904",$database);
 		$result = mysql_query($query);
 		if($row = mysql_fetch_array($result))
 			$error = "Warning! 此帐号已被注册";

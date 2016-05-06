@@ -45,8 +45,8 @@
 					  	</div>
 					  </div>";
 				$query = "select user.Name,article.*,count(respond.id) as num from article inner join user on article.author_id = user.id left join respond on respond.article_id = article.id where user.id = '".$_SESSION['id']."'group by article.id order by article.last_update desc limit 5";
-				$database = mysql_connect("localhost","root","123456");
-				mysql_select_db("hw3",$database);
+				$database = mysql_connect("localhost:3306","s404410904","s404410904");
+				mysql_select_db("s404410904",$database);
 				$result = mysql_query($query);
 				echo "<div class=\"row\">
 						 <div class=\" col-md-12\"><h3 style=\"color:#009393;\">您近期更新/被留言的文章</h3></div>
@@ -75,8 +75,8 @@
 			    mysql_close($database);
 
 				$query = "select user.Name,article.*,count(respond.id) as num from article inner join user on article.author_id = user.id left join respond on respond.article_id = article.id group by article.id order by article.last_update desc";
-				$database = mysql_connect("localhost","root","123456");
-				mysql_select_db("hw3",$database);
+				$database = mysql_connect("localhost:3306","s404410904","s404410904");
+				mysql_select_db("s404410904",$database);
 				$result = mysql_query($query);
 				echo "<div class=\"row\">
 						 <div class=\" col-md-12\"><h3 style=\"color:#009393;\">所有文章列表</h3></div>
@@ -106,7 +106,7 @@
 			}
 			else
 			{
-				$article_id = (int)$_GET['article_id'];
+				$_GET['article_id'] = (int)$_GET['article_id'];
 				if($_GET['article_id'] < 0)
 					echo "<script>window.location.href=\"./index.php\"</script>";
 				else
@@ -114,8 +114,8 @@
 					if(!isset($_GET['respond']) && !isset($_GET['delete']))
 					{
 						$query = "select article.*,user.Name from article,user where user.id = article.author_id and article.id = '".$_GET['article_id']."'";
-						$database = mysql_connect("localhost","root","123456");
-						mysql_select_db("hw3",$database);
+						$database = mysql_connect("localhost:3306","s404410904","s404410904");
+						mysql_select_db("s404410904",$database);
 						$result = mysql_query($query);
 						mysql_close($database);
 						$row = mysql_fetch_array($result);
@@ -136,8 +136,8 @@
 								<div class=\"col-md-12\"><p>".$row['content']."</p></div>
 							  </div>";
 						$query = "select respond.*,user.Name from respond left join user on respond.user_id = user.id where article_id = '".$_GET['article_id']."' order by respond.timestamp desc";
-						$database = mysql_connect("localhost","root","123456");
-						mysql_select_db("hw3",$database);
+						$database = mysql_connect("localhost:3306","s404410904","s404410904");
+						mysql_select_db("s404410904",$database);
 						$result = mysql_query($query);
 						mysql_close($database);
 						echo "<div class=\"row\">
@@ -166,11 +166,15 @@
 					}
 					else if(isset($_GET['respond']))
 					{
+						if(!get_magic_quotes_gpc())
+						{
+							$_GET['message'] = addslashes($_GET['message']);
+						}
 						date_default_timezone_set("Asia/Shanghai");
 						$date = date("Y-m-d H:i:s",time());
 						$insert = "insert into respond (article_id,user_id,message,timestamp) values('".$_GET['article_id']."','".$_SESSION['id']."','".$_GET['message']."','".$date."')";
-						$database = mysql_connect("localhost","root","123456");
-						mysql_select_db("hw3",$database);
+						$database = mysql_connect("localhost:3306","s404410904","s404410904");
+						mysql_select_db("s404410904",$database);
 						mysql_query($insert);
 						$update = "update article set last_update='".$date."' where id='".$_GET['article_id']."'";
 						mysql_query($update);
@@ -180,8 +184,8 @@
 					else if(isset($_GET['delete']))
 					{
 						$query = "select * from article where id = '".$_GET['article_id']."'";
-						$database = mysql_connect("localhost","root","123456");
-						mysql_select_db("hw3",$database);
+						$database = mysql_connect("localhost:3306","s404410904","s404410904");
+						mysql_select_db("s404410904",$database);
 						$result = mysql_query($query);
 						$row = mysql_fetch_array($result);
 						if($row['author_id'] != $_SESSION['id'])
